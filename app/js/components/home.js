@@ -5,7 +5,7 @@ var home = {};
 home.controller = function () {
 	this.title = 'Hello world';
 	this.params = common.getQueryParams(window.location.hash);
-	console.log('[Page] Home', this.params);
+	console.log('[Home]', this.params);
 };
 
 home.vm = function () {
@@ -17,7 +17,7 @@ home.view = function(ctrl) {
 		m("h1", ctrl.title),
 		m("section", [
 			m("div[class='links']", [
-				m("a[href='/post']", {config: m.route}, "Posts")
+				m("a[href='/fixtures']", {config: m.route}, "Fixtures")
 			])
 		])
 	]

@@ -4,7 +4,7 @@ var menu = {};
 
 menu.controller = function() {
 	this.setActiveClass = function (txt) {
-		console.log(m.route())
+		//todo: improve - updates on every dom chage
 		if (m.route() && m.route() != '/') {
 			return  m.route().indexOf(txt) > -1 ? 'active':'';
 		} else if (txt == 'home') {
@@ -20,7 +20,7 @@ menu.view = function(ctrl) {
 	  			m("a", { class: ctrl.setActiveClass('home'), href: "/home", config: m.route }, "Home")
 			]),
 			m('li', [
-	  			m("a", { class: ctrl.setActiveClass('posts'), href: "/posts", config: m.route }, "Posts")
+	  			m("a", { class: ctrl.setActiveClass('fixtures'), href: "/fixtures", config: m.route }, "Fixtures")
 			])
 		])
   ]);
