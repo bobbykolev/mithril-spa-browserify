@@ -1,0 +1,7 @@
+{
+  "name": "react-results",
+  "version": "0.0.1",
+  "dependencies": {
+    "mithril":"~0.2.0"
+  }
+}
