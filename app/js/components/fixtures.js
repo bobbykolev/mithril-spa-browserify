@@ -1,61 +1,60 @@
 var m = require('../../../libs/mithril/mithril.min');
 var common = require('../common');
-var posts = {};
+var loader = require('./loader');
+var fixtureRow = require('./fixtureRow');
+var fixtures = {};
 
-posts.controller = function () {
-	var postList = m.request({method: "GET", url: "./fixtures357.json", background: true, initialValue: {fixtures:[]} })
-  	postList.then(m.redraw);
-	
+fixtures.controller = function () {
+	var fixtureList;
+
 	this.title = 'Fixtures';
+
+	m.redraw.strategy("diff");
+
+	fixtureList = m.request({method: "GET", url: "./fixtures357.json", background: true })
+  	fixtureList.then(m.redraw);
 
 	this.params = common.getQueryParams(window.location.hash);
 	console.log('[Fixtures] ', this.params, m.route.param());
 
     return {
-    	postList: postList
-    }
+    	fixtureList: fixtureList
+    };
 };
 
-posts.model = function () {
-	/*var postsData = m.prop([]);
+fixtures.model = function () {
+	/*var fixturesData = m.prop([]);
 	var error = m.prop("");
 
-	m.request({method: "GET", url: "./posts.json"})
-	    .then(postsData, error);*/
+	m.request({method: "GET", url: "./fixtures.json"})
+	    .then(fixturesData, error);*/	
 };
 
-posts.view = function(ctrl) {
+fixtures.view = function(ctrl) {
 	var tempMatchday = 0;
 	return [
 		m("h1", ctrl.title),
 		m("section", [
-			m("ul[class='posts']", [
-				ctrl.postList().fixtures.map(function(fixture) {
-					if (fixture.matchday != tempMatchday) {
-						tempMatchday = fixture.matchday;
-						return m("ul.fixture", [
-								m("li.round", 'Round ' + fixture.matchday),
-			        			m("li",[
-					        		m("span.name", fixture.homeTeamName),
-					        		m("span.result", fixture.result.goalsHomeTeam > -1 ? fixture.result.goalsHomeTeam : '-'),
-					        		m("span.result", fixture.result.goalsAwayTeam > -1 ? fixture.result.goalsAwayTeam : '-'),
-					        		m("span.name", fixture.awayTeamName),
-	        				])
-	        			]);
-					} else {
-			        	return m("ul.fixture", [
-			        			m("li",[
-					        		m("span.name", fixture.homeTeamName),
-					        		m("span.result", fixture.result.goalsHomeTeam > -1 ? fixture.result.goalsHomeTeam : '-'),
-					        		m("span.result", fixture.result.goalsAwayTeam > -1 ? fixture.result.goalsAwayTeam : '-'),
-					        		m("span.name", fixture.awayTeamName),
-	        				])
-	        			]);
-			    	}
-			    })
+			m("ul[class='fixtures']", [
+				ctrl.fixtureList() ? 
+					ctrl.fixtureList().fixtures.map(function(fixture) {
+						if (fixture.matchday != tempMatchday) {
+							tempMatchday = fixture.matchday;
+							return m("ul.fixture", [
+									m("li.round", 'Round ' + fixture.matchday),
+				        			m.component(fixtureRow, {fixture: fixture})
+		        			]);
+						} else {
+				        	return m("ul.fixture", [
+				        			m.component(fixtureRow, {fixture: fixture})
+		        			]);
+				    	}
+				    })
+				:
+				m.component(loader)
 			])
 		])
 	]
 };
 
-module.exports = posts;
+module.exports = fixtures;

@@ -3,6 +3,8 @@ var m = require('../../../libs/mithril/mithril.min');
 var menu = {};
 
 menu.controller = function() {
+	m.redraw.strategy("none");
+
 	this.setActiveClass = function (txt) {
 		//todo: improve - updates on every dom chage
 		if (m.route() && m.route() != '/') {
